@@ -34,7 +34,8 @@ class EstadoController extends Controller
      */
     public function create()
     {
-        //
+        return view('estado.create');
+		//
     }
 
     /**
@@ -45,7 +46,9 @@ class EstadoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $valid = $request->validate(['nome'=>'required','sigla'=>'required']);
+	   Estado::create($valid);
+	   return redirect('/estados')->with(['success'=>'O estado foi criado!']);
     }
 
     /**
@@ -67,7 +70,7 @@ class EstadoController extends Controller
      */
     public function edit(Estado $estado)
     {
-        //
+        return view('estado.create', compact('estado'));
     }
 
     /**
@@ -79,7 +82,11 @@ class EstadoController extends Controller
      */
     public function update(Request $request, Estado $estado)
     {
-        //
+        $valid = $request->validate(['nome'=>'required','sigla'=>'required']);
+		$estado->fill($valid);
+		$estado->save();
+		return redirect('/estados')->with(['success'=>'O estado foi atualizado!']);
+
     }
 
     /**
@@ -90,6 +97,11 @@ class EstadoController extends Controller
      */
     public function destroy(Estado $estado)
     {
-        //
+        $estado->delete();
+		return redirect('/estados')->with(['success'=>'Removido com Suceso!']);
     }
+	public function confirm(Estado $estado){
+		return view('estado.confirm',compact('estado'));
+
+	}
 }
